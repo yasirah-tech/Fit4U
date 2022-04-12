@@ -30,6 +30,50 @@
     });
   });
   </script>
+
+  <script>
+    console.log("works")
+    document.addEventListener("DOMContentLoaded", () => {
+
+
+      // login
+      const logInBtn = document.getElementById("lgn-btn")
+      logInBtn.addEventListener("click", (e)=> {
+
+        e.preventDefault();
+
+        const email = document.getElementById("lgn-email").value; 
+        const password = document.getElementById("lgn-password").value; 
+        console.log(email, password)
+        
+        fetch(/*"routeToLogIn"*/)
+
+       
+
+      })
+
+       //registration 
+
+        const rgrBtn = document.getElementById("rgr-btn")
+
+        rgrBtn.addEventListener("click", (e) => {
+          alert("works")
+          const username = document.getElementById("rgr-username").value
+          const password = document.getElementById("rgr-password").value
+          const cpassword = document.getElementById("rgr-cpassword").value
+          const email = document.getElementById("rgr-email").value
+          
+          console.log(username, password, cpassword, email)
+
+          fetch(/*route to register*/)
+        })
+
+
+
+
+    })
+   
+  </script>
     <!-- Form-->
 <div class="form">
     <div class="form-toggle"></div>
@@ -40,20 +84,20 @@
       <div class="form-content">
         <form>
           <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required="required"/>
+            <label for="email">Email</label>
+            <input type="text" id="lgn-email" name="email" required="required"/>
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" required="required"/>
+            <input type="password" id="lgn-password" name="password" required="required"/>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="form-remember">
               <input type="checkbox"/>Remember Me
             </label><a class="form-recovery" href="#">Forgot Password?</a>
-          </div>
+          </div> -->
           <div class="form-group">
-            <button type="submit">Log In</button>
+            <button id= "lgn-btn" type="submit">Log In</button>
           </div>
         </form>
       </div>
@@ -66,22 +110,22 @@
         <form>
           <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" required="required"/>
+            <input type="text" id="rgr-username" name="username" required="required"/>
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" required="required"/>
+            <input type="password" id="rgr-password" name="password" required="required"/>
           </div>
           <div class="form-group">
             <label for="cpassword">Confirm Password</label>
-            <input type="password" id="cpassword" name="cpassword" required="required"/>
+            <input type="password" id="rgr-cpassword" name="cpassword" required="required"/>
           </div>
           <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required="required"/>
+            <input type="email" id="rgr-email" name="email" required="required"/>
           </div>
           <div class="form-group">
-            <button type="submit">Register</button>
+            <button type="submit" id="rgr-btn">Register</button>
           </div>
         </form>
       </div>
