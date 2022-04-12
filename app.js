@@ -2,6 +2,8 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./db/db");
+const $ = require("jquery")
+const jsdom = require("jsdom")
 
 //start server 
 const app = express();
