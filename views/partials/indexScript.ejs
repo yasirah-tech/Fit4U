@@ -1,0 +1,75 @@
+<script>
+  $(document).ready(function () {
+    var panelOne = $(".form-panel.two").height(),
+      panelTwo = $(".form-panel.two")[0].scrollHeight;
+    $(".form-panel.two")
+      .not(".form-panel.two.active")
+      .on("click", function (e) {
+        e.preventDefault();
+        $(".form-toggle").addClass("visible");
+        $(".form-panel.one").addClass("hidden");
+        $(".form-panel.two").addClass("active");
+        $(".form").animate(
+          {
+            height: panelTwo,
+          },
+          200
+        );
+      });
+
+    $(".form-toggle").on("click", function (e) {
+      e.preventDefault();
+      $(this).removeClass("visible");
+      $(".form-panel.one").removeClass("hidden");
+      $(".form-panel.two").removeClass("active");
+      $(".form").animate(
+        {
+          height: panelOne,
+        },
+        200
+      );
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // login
+    const logInBtn = document.getElementById("lgn-btn");
+    logInBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      alert("works");
+      const email = document.getElementById("lgn-email").value;
+      const password = document.getElementById("lgn-password").value;
+      const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, password: password }),
+      };
+      fetch("http://localhost:8000/auth/login", options)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+    });
+
+    //registration
+    const rgrBtn = document.getElementById("rgr-btn");
+    rgrBtn.addEventListener("click", (e) => {
+      alert("works");
+      const username = document.getElementById("rgr-username").value;
+      const password = document.getElementById("rgr-password").value;
+      const cpassword = document.getElementById("rgr-cpassword").value;
+      const email = document.getElementById("rgr-email").value;
+      const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: username,
+          email: email,
+          password: password,
+        }),
+      };
+      fetch("http://localhost:8000/auth/register", options)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+    });
+  });
+</script>
