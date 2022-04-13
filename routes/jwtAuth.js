@@ -1,8 +1,8 @@
 const router = require("express").Router();
-const pool = require("../db_pool")
-const bcrypt = require("bcrypt")
-const jwtGenerator = require("../util/jwt_generator")
-const validInfo = require("../middleware/validInfo")
+const pool = require("../db_pool");
+const bcrypt = require("bcrypt");
+const jwtGenerator = require("../util/jwt_generator");
+const validInfo = require("../middleware/validInfo");
 
 
 //registering 
@@ -34,7 +34,7 @@ router.post("/register", validInfo, async(req,res) => {
         res.status(500).send("server error")
     }
     
-})
+});
 
 // sign-in 
 
@@ -56,12 +56,12 @@ router.post("/login", validInfo, async(req, res) => {
         .cookie("access_token", token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-        }).status(200).json("Logged in successfully")
+        }).status(200).json("Logged in successfully");
         
     } catch (error) {
         
     }
 
-})
+});
 
 module.exports = router; 

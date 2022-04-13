@@ -37,7 +37,6 @@
     const logInBtn = document.getElementById("lgn-btn");
     logInBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      alert("works");
       const email = document.getElementById("lgn-email").value;
       const password = document.getElementById("lgn-password").value;
       const options = {
@@ -46,14 +45,19 @@
         body: JSON.stringify({ email: email, password: password }),
       };
       fetch("http://localhost:8000/auth/login", options)
-        .then((response) => response.json())
-        .then((data) => console.log(data));
+        .then((response) => {
+            if (response.status !== 200) {
+              alert("wrong credentials");
+              return;
+            }
+            window.location.replace("/home");
+        });
+        
     });
 
     //registration
     const rgrBtn = document.getElementById("rgr-btn");
     rgrBtn.addEventListener("click", (e) => {
-      alert("works");
       const username = document.getElementById("rgr-username").value;
       const password = document.getElementById("rgr-password").value;
       const cpassword = document.getElementById("rgr-cpassword").value;
