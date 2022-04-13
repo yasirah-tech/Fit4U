@@ -22,7 +22,11 @@ router.post("/register", validInfo, async(req,res) => {
       const newUser = await pool.query("INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *", [username, email, bcryptPassword])
 
       const token = await jwtGenerator(newUser.rows[0].user_id)
-      res.json({ token });
+      return res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      }).status(200).json("Registered successfully")
       }
 
     } catch (error) {
@@ -48,7 +52,12 @@ router.post("/login", validInfo, async(req, res) => {
         }
 
         const token = await jwtGenerator(user.rows[0].id)
-        res.json({ token })
+        return res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        }).status(200).json("Logged in successfully")
+        
     } catch (error) {
         
     }

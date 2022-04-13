@@ -1,6 +1,7 @@
 //import
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser")
 const db = require("./db/db");
 const $ = require("jquery")
 const jsdom = require("jsdom")
@@ -14,6 +15,7 @@ app.set('view engine', 'ejs');
 //middleware
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 //endpoints
 app.get('/', (req, res) => {

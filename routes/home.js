@@ -5,8 +5,12 @@ const authorization = require("../middleware/authorization")
 router.get("/", authorization, async(req, res) => {
     try {
         // res.json(req.user)
-        const user = await pool.query("SELECT username FROM users WHERE user_id = $1", [req.user])
+        // console.log(req.user)
+        // console.log("hit")
+        // console.log(req.user)
+        const user = await pool.query("SELECT username, email FROM users WHERE id = $1",[req.user])
         res.json(user.rows[0])
+        
     } catch (error) {
         
     }
