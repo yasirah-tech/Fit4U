@@ -1,0 +1,21 @@
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+var userLocation = document.getElementById("location");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    let location =  await navigator.geolocation.getCurrentPosition(showPosition);
+    userLocation.innerHTML = location
+  } else {
+    userLocation.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+
+async function showPosition(position) {
+    userLocation.innerHTML = "Latitude: " + position.coords.latitude +
+  "<br>Longitude: " + position.coords.longitude;
+}
+  })
+</script>
