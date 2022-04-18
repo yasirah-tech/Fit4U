@@ -1,91 +1,112 @@
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-      // change first and last name and alert user once  they click submit 
-      const username = document.getElementById("name-submit")
-      const nameHolder = document.getElementById('name-holder')
-      const nameForm = document.getElementById('name-form')
-      username.addEventListener("click", (e) => {
-        e.preventDefault()
-      const firstName = document.getElementById('first-name').value
-      const lastName = document.getElementById('last-name').value
-      alert(`Name upddated to ${firstName} ${lastName}`)
-      username.style.display = "none"
-    })
+  document.addEventListener("DOMContentLoaded", () => {
+    // change first and last name and alert user once  they click submit
+    const editProfileButton = document.getElementById("edit-profile");
+    const doneEditing = document.getElementById("done-editing");
+    const postContent = document.getElementById("postContent");
+    const postButton = document.getElementById("postButton");
+    const userId = document.getElementById("userId").value;
+    const likeButton = document.getElementsByClassName("likeButton");
+    const displayReply = document.getElementsByClassName("displayReply");
+    const replyButton = document.getElementsByClassName("replyButton");
 
-  
-      // update profile info 
-      let bioInput, userFullname, locationInput
-      const input = document.getElementById('when-edited');
-      const log = document.getElementById('values');
-      const updateName = document.getElementById('update-name');
-      const locationForm = document.getElementById('location-form')
-      const locationPara = document.getElementById('location-paragraph')
-      const namePara = document.getElementById('name-paragraph')
-      const location = document.getElementById('location')
-      const userLocation = document.getElementById('user-location')
-      const locationSubmit = document.getElementById('location-submit')
-      const editProfileButton = document.getElementById('edit-profile');
-      const doneEditing = document.getElementById('done-editing');
-    
-      // chaange location 
-      locationSubmit.addEventListener("click", (e) => {
-      e.preventDefault()
-    })
-
-      editProfileButton.addEventListener('click', clickEditProfile)
-      function clickEditProfile () {
-        editProfileButton.style.display = "none"
-        // nameHolder.style.display = "none"
-        // location.style.display = "none"
-        // userLocation.style.display = "none"
-        locationPara.style.display = "none"
-        locationForm.style.display = "block"
-        nameForm.style.display = "block"
-        namePara.style.display = "none"
-        // updateName.style.display = "none"
-        doneEditing.style.display = "block"
-        input.style.display = 'block'
+    editProfileButton.addEventListener("click", (e) => {
+      const profileForm = document.getElementById("formContainer");
+      if (!profileForm.classList.contains("formToggled")) {
+        editProfileButton.value = "Done Editing";
+        profileForm.classList.add("formToggled");
+        profileForm.style.display = "initial";
+      } else {
+        profileForm.style.display = "none";
+        editProfileButton.value = "Edit Profile";
+        profileForm.classList.remove("formToggled");
+        const fName = document.getElementById("fNameForm").value;
+        const lName = document.getElementById("lNameForm").value;
+        const location = document.getElementById("locationForm").value;
+        const sport = document.getElementById("sportForm").value;
+        const bio = document.getElementById("bioForm").value;
+        fetch(`/user/${userId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            first_name: fName,
+            last_name: lName,
+            location: location,
+            sports: sport,
+            bio: bio,
+          }),
+        }).then((data) => {
+          window.location.reload();
+        });
       }
+    });
 
-      input.addEventListener('input', updateValue);
-      function updateValue(e) {
-        bioInput = log.textContent = e.target.value
-        console.log(bioInput)
+    postButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      const content = postContent.value;
+      if(!content) {
+        Swal.fire("Error", "You didn't type in anything", "error"); 
+        return;
       }
+      fetch(`/posts`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: userId,
+          content: content,
+        }),
+      }).then((data) => {
+        window.location.reload();
+      });
+    });
 
-      doneEditing.addEventListener('click', (e) => {
-        const firstName = document.getElementById('first-name').value
-        const lastName = document.getElementById('last-name').value
-        const locationInput = document.getElementById('location-input').value
-        doneEditing.style.display = "none"
-        // updateName.style.display = "none"
-        editProfileButton.style.display = "block"
-        console.log(bioInput, "bio")
-        input.style.display = "none"
-        updateName.innerHTML = `${firstName} ${lastName}`
-        // nameHolder.style.display = "block"
-        nameForm.style.display = "none"
-        namePara.style.display = "block"
-        // location.style.display = "block"
-        updateName.innerHTML = `${firstName} ${lastName}`
-        userLocation.innerHTML = `${locationInput}`
-        locationForm.style.display = "none"
-        locationPara.style.display = "block"
-        // userLocation.style.display = "block"
+    Array.from(likeButton).forEach(function(element) {
+      element.addEventListener('click', (e)=>{
+        const id = e.target.attributes['data-postid'].value
+         fetch(`/posts/likes/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        }).then((data) => {
+          window.location.reload();
+        });
+      });
+    });
+
+    Array.from(displayReply).forEach(function(element) {
+      element.addEventListener('click', (e)=>{
+        const id = e.target.attributes['data-postid'].value;
+        const commentBox = document.querySelector(`.commentBox${id}`);
+        if (!commentBox.classList.contains("commentBoxToggle")) {
+          commentBox.style.display = "initial";
+          commentBox.classList.add("commentBoxToggle");
+        } else {
+          commentBox.style.display = "none";
+          commentBox.classList.remove("commentBoxToggle");
+        }
+      });
+    });
+
+    Array.from(replyButton).forEach(function(element) {
+      element.addEventListener('click', (e) => {
+        const postId = e.target.attributes['data-postid'].value;
+        const content = document.getElementById(`replyContent${postId}`).value;
+        if(!content) {
+        Swal.fire("Error", "You didn't type in anything", "error"); 
+        return;
+      }
+        fetch(`/posts/comments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          postId: postId,
+          content: content,
+          userId: userId
+        }),
+      }).then((data) => {
+        window.location.reload();
+      });
       })
-    //     const options = {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       first_name: firstName,
-    //       last_name: firstName,
-
-    //     }),
-    //   };
-    //   fetch("http://localhost:8000/auth/updateuserInfo", options)
-    //     .then((response) => response.json())
-    //     .then((data) => console.log(data));
-    // });    
     })
-    
+
+  });
 </script>

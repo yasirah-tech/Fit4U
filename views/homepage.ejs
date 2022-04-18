@@ -2,8 +2,8 @@
 <html lang="en">
   <%- include('./partials/homeHead.ejs')%>
   <body>
-    <%- include('./partials/navbar.ejs')%>
-    <%- include('./partials/homeScript.ejs') %>
+    <%- include('./partials/navbar.ejs')%> <%-
+    include('./partials/homeScript.ejs') %>
     <div class="container">
       <div class="row">
         <div class="col-xl-5">
@@ -11,7 +11,7 @@
             <div class="card-body">
               <div class="d-flex align-items-start">
                 <img
-                  src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                  src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0="
                   class="rounded-circle avatar-lg img-thumbnail"
                   alt="profile-image"
                 />
@@ -19,72 +19,109 @@
                   <h4 class="my-0"><%= user.username %></h4>
                   <p class="text-muted"><%= user.email %></p>
                 </div>
-              </div><br>
-              <input id="edit-profile" value="Edit Profile" type="button">	
-              <input style="display: none;" id="done-editing" value="Done Editing" type="button">	
+              </div>
+              <br />
+              <input
+                id="edit-profile"
+                value="Edit Profile"
+                class="btn btn-primary"
+                type="button"
+              />
+              <input
+                style="display: none"
+                id="done-editing"
+                value="Done Editing"
+                type="button"
+              />
+              <div class="mt-3" id="formContainer" style="display: none">
+                <div class="container mt-3">
+                  <form id="profileForm" name="profileForm">
+                    <div>
+                      <input type="hidden" id="userId" value="<%= user.id %>" />
+                      <label for="exampleInputEmail1" class="form-label"
+                        >First Name</label
+                      >
+                      <input
+                        type="text"
+                        name="fname"
+                        id="fNameForm"
+                        class="form-control"
+                        value=""
+                      />
+                    </div>
+                    <div>
+                      <label for="exampleInputEmail1" class="form-label"
+                        >Last Name</label
+                      >
+                      <input
+                        type="text"
+                        name="lname"
+                        id="lNameForm"
+                        class="form-control"
+                        value=""
+                      />
+                    </div>
+                    <label for="exampleInputEmail1" class="form-label"
+                      >Location</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="locationForm"
+                      aria-describedby="emailHelp"
+                    />
+                    <label for="exampleInputEmail1" class="form-label"
+                      >Sport</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="sportForm"
+                      aria-describedby="emailHelp"
+                    />
+                    <label for="bioForm" class="form-label">Bio</label>
+                    <textarea
+                      class="form-control"
+                      id="bioForm"
+                      rows="3"
+                    ></textarea>
+                  </form>
+                </div>
+              </div>
               <div class="mt-3">
                 <h4 class="font-13 text-uppercase">About Me :</h4>
-                <input id="when-edited"style="display: none;" placeholder="Write a bit about you..." name="name"/>
-                <p id="values">Bio inpu change </p>
-                <form id="appear-edit-bio"style="display: none;"  >
-                  <label  for="bioname">Bio</label><br>
-                  <input id="bio-submit" type="submit">
-                  </form>
-                <form style="display: none" id="bio-form" class="text-muted font-13 mb-3">
-                  <input id="bio-input"  type="text" id="bio" name="bio" >
-                  <input id="bio-button" type="button">	
-                </form>
-                <p>
-                  <form id="name-form" style="display: none;" >
-                    <label for="fname">First name:</label><br>
-                    <input id="first-name" type="text" name="fname" placeholder="First name"><br>
-                    <label for="lname">Last name:</label><br>
-                    <input id="last-name" type="text" name="lname" placeholder="Last name" name">
-                    <input id="name-submit" type="submit">
-                  </form>
+                <p class="text-muted font-13 mb-3">
+                  <% if (!user.bio) { %> Tell us about yourself! <% } else { %>
+                  <%= user.bio %> <% } %>
                 </p>
-                <p id="name-paragraph" class="text-muted mb-2 font-13">
-                  <strong id="name-holder">Full Name:</strong>
-                  <span id="update-name"  class="ms-2">Geneva Knight</span>
+                <p class="text-muted mb-2 font-13">
+                  <strong>Full Name :</strong>
+                  <span class="ms-2">
+                    <% if (!user.first_name && !user.last_name) { %> What's your
+                    full name? <% } else { %> <%= user.first_name %> <%=
+                    user.last_name %> <% } %>
+                  </span>
                 </p>
 
                 <p class="text-muted mb-2 font-13">
-                  <strong>Email :</strong>
-                  <span class="ms-2"><%= user.email %></span>
+                  <strong>Location :</strong
+                  ><span class="ms-2">
+                    <% if (!user.location) { %> Where are you from? <% } else {
+                    %> <%= user.location %> <% } %>
+                  </span>
                 </p>
-                <form id="location-form" style="display: none;" >
-                  <label for="locationame">Location:</label><br>
-                  <input id="location-input" type="text" name="fname" placeholder=Location"><br>
-                  <input id="location-submit" type="submit">
-                </form>
-                <p id="location-paragraph" class="text-muted mb-1 font-13">
-                  <strong id="location">Location:</strong> 
-                  <span id="user-location" class="ms-2">USA</span>
+
+                <p class="text-muted mb-2 font-13">
+                  <strong>Sport :</strong>
+                  <span class="ms-2">
+                    <% if (!user.sports) { %> What's your favorite sport? <% }
+                    else { %> <%= user.sports %> <% } %>
+                  </span>
                 </p>
               </div>
             </div>
           </div>
           <!-- end card -->
-
-          <div class="card">
-            <div class="card-body text-center">
-              <div class="row">
-                <div class="col-4 border-end border-light">
-                  <h5 class="text-muted mt-1 mb-2 fw-normal">Likes</h5>
-                  <h2 class="mb-0 fw-bold">116</h2>
-                </div>
-                <div class="col-4 border-end border-light">
-                  <h5 class="text-muted mt-1 mb-2 fw-normal">Comments</h5>
-                  <h2 class="mb-0 fw-bold">87</h2>
-                </div>
-                <div class="col-4">
-                  <h5 class="text-muted mt-1 mb-2 fw-normal">Post</h5>
-                  <h2 class="mb-0 fw-bold">98</h2>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- end card-->
         </div>
         <!-- end col-->
         <div class="col-xl-7">
@@ -95,6 +132,7 @@
                 <span class="input-icon">
                   <textarea
                     rows="3"
+                    id="postContent"
                     class="form-control"
                     placeholder="Write something..."
                   ></textarea>
@@ -103,218 +141,91 @@
                   <div class="float-end">
                     <button
                       type="submit"
+                      id="postButton"
                       class="btn btn-sm btn-dark waves-effect waves-light"
                     >
                       Post
                     </button>
                   </div>
-                  <div>
-                    <a href="#" class="btn btn-sm btn-light text-black-50"
-                      ><i class="far fa-user"></i
-                    ></a>
-                    <a href="#" class="btn btn-sm btn-light text-black-50"
-                      ><i class="fa fa-map-marker-alt"></i
-                    ></a>
-                    <a href="#" class="btn btn-sm btn-light text-black-50"
-                      ><i class="fa fa-camera"></i
-                    ></a>
-                    <a href="#" class="btn btn-sm btn-light text-black-50"
-                      ><i class="far fa-smile"></i
-                    ></a>
-                  </div>
+                  <br>
                 </div>
               </form>
               <!-- end comment box -->
-
               <!-- Story Box-->
               <div class="border border-light p-2 mb-3">
-                <div class="d-flex align-items-start">
+                <% if (posts.length > 0) { %> <% posts.forEach(post => { %>
+                <div class="d-flex align-items-start mb-3">
                   <img
                     class="me-2 avatar-sm rounded-circle"
-                    src="https://bootdey.com/img/Content/avatar/avatar4.png"
+                    src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0="
                     alt="Generic placeholder image"
                   />
                   <div class="w-100">
                     <h5 class="">
-                      Thelma Fridley
-                      <small class="text-muted"> 1 hour ago</small>
+                      <%= post.first_name %> <%= post.last_name %>
+                      <small class="text-muted">
+                        <%= moment(post.created_at).fromNow() %></small
+                      >
                     </h5>
                     <div class="">
-                      Cras sit amet nibh libero, in gravida nulla. Nulla vel
-                      metus scelerisque ante sollicitudin. Cras purus odio,
-                      vestibulum in vulputate at, tempus viverra turpis. Duis
-                      sagittis ipsum. Praesent mauris. Fusce nec tellus sed
-                      augue semper porta. Mauris massa.
+                      <%= post.content %>
                       <br />
                       <a
                         href="javascript: void(0);"
-                        class="text-muted font-13 d-inline-block mt-2"
+                        data-postId="<%= post.postId %>"
+                        class="text-muted font-13 d-inline-block mt-2 likeButton"
+                        ><i class="mdi mdi-heart"></i>Likes: <%= post.likes %>
+                      </a>
+                      <a
+                        href="javascript: void(0);"
+                        data-postId="<%= post.postId %>"
+                        class="text-muted font-13 d-inline-block mt-2 displayReply"
                         ><i class="mdi mdi-reply"></i> Reply</a
                       >
                     </div>
-                  </div>
-                </div>
-
-                <div class="post-user-comment-box">
-                  <div class="d-flex align-items-start">
-                    <img
-                      class="me-2 avatar-sm rounded-circle"
-                      src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                      alt="Generic placeholder image"
-                    />
-                    <div class="w-100">
-                      <h5 class="mt-0">
-                        Jeremy Tomlinson
-                        <small class="text-muted">3 hours ago</small>
-                      </h5>
-                      Nice work, makes me think of The Money Pit.
-
-                      <br />
-                      <a
-                        href="javascript: void(0);"
-                        class="text-muted font-13 d-inline-block mt-2"
-                        ><i class="mdi mdi-reply"></i> Reply</a
-                      >
-
-                      <div class="d-flex align-items-start mt-3">
-                        <a class="pe-2" href="#">
-                          <img
-                            src="https://bootdey.com/img/Content/avatar/avatar4.png"
-                            class="avatar-sm rounded-circle"
-                            alt="Generic placeholder image"
-                          />
-                        </a>
-                        <div class="w-100">
-                          <h5 class="mt-0">
-                            Kathleen Thomas
-                            <small class="text-muted">5 hours ago</small>
-                          </h5>
-                          i'm in the middle of a timelapse animation myself!
-                          (Very different though.) Awesome stuff.
-                        </div>
+                    <% if (post.replies.length > 0) { %> 
+                      <% post.replies.forEach(reply => { %>
+                    <div class="d-flex align-items-start mt-3">
+                      <img
+                        class="me-2 avatar-sm rounded-circle"
+                        src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0="
+                        alt="Generic placeholder image"
+                      />
+                      <div class="w-100">
+                        <h5 class="mt-0">
+                          <%= reply.first_name %> <%= reply.last_name %>
+                          <small class="text-muted"><%= moment(reply.created_at).fromNow() %></small>
+                        </h5>
+                        <%= reply.content %>
+                        <br />
                       </div>
                     </div>
-                  </div>
-
-                  <div class="d-flex align-items-start mt-2">
-                    <a class="pe-2" href="#">
-                      <img
-                        src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                        class="rounded-circle"
-                        alt="Generic placeholder image"
-                        height="31"
-                      />
-                    </a>
-                    <div class="w-100">
-                      <input
-                        type="text"
-                        id="simpleinput"
-                        class="form-control border-0 form-control-sm"
-                        placeholder="Add comment"
-                      />
-                    </div>
+                    <% })} %>
                   </div>
                 </div>
-
-                <div class="mt-2">
-                  <a
-                    href="javascript: void(0);"
-                    class="btn btn-sm btn-link text-danger"
-                    ><i class="mdi mdi-heart"></i> Like (28)</a
-                  >
-                  <a
-                    href="javascript: void(0);"
-                    class="btn btn-sm btn-link text-muted"
-                    ><i class="mdi mdi-share-variant"></i> Share</a
-                  >
-                </div>
-              </div>
-
-              <!-- Story Box-->
-              <div class="border border-light p-2 mb-3">
-                <div class="d-flex align-items-start">
-                  <img
-                    class="me-2 avatar-sm rounded-circle"
-                    src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                    alt="Generic placeholder image"
-                  />
-                  <div class="w-100">
-                    <h5 class="m-0">Jeremy Tomlinson</h5>
-                    <p class="text-muted"><small>about 2 minuts ago</small></p>
+                <div class="card-body commentBox<%= post.postId %>" style="display: none">
+                  <span class="input-icon">
+                  <textarea
+                    rows="3"
+                    id="replyContent<%= post.postId %>"
+                    class="form-control"
+                    placeholder="Write something..."
+                  ></textarea>
+                </span>
+                <div class="comment-area-btn">
+                  <div class="float-end">
+                    <button
+                      type="submit"
+                      data-postId="<%= post.postId %>"
+                      class="btn btn-sm btn-dark waves-effect waves-light mt-2 replyButton"
+                    >
+                      Reply
+                    </button>
                   </div>
+                  <br>
                 </div>
-                <p>
-                  Story based around the idea of time lapse, animation to post
-                  soon!
-                </p>
-
-                <img
-                  src="https://via.placeholder.com/800x540/FF7F50/000000"
-                  alt="post-img"
-                  class="rounded me-1"
-                  height="60"
-                />
-                <img
-                  src="https://via.placeholder.com/800x540/FF7F50/000000"
-                  alt="post-img"
-                  class="rounded me-1"
-                  height="60"
-                />
-                <img
-                  src="https://via.placeholder.com/800x540/FF7F50/000000"
-                  alt="post-img"
-                  class="rounded"
-                  height="60"
-                />
-
-                <div class="mt-2">
-                  <a
-                    href="javascript: void(0);"
-                    class="btn btn-sm btn-link text-muted"
-                    ><i class="mdi mdi-reply"></i> Reply</a
-                  >
-                  <a
-                    href="javascript: void(0);"
-                    class="btn btn-sm btn-link text-muted"
-                    ><i class="mdi mdi-heart-outline"></i> Like</a
-                  >
-                  <a
-                    href="javascript: void(0);"
-                    class="btn btn-sm btn-link text-muted"
-                    ><i class="mdi mdi-share-variant"></i> Share</a
-                  >
                 </div>
-              </div>
-
-              <!-- Story Box-->
-              <div class="border border-light p-2 mb-3">
-                <div class="d-flex align-items-start">
-                  <img
-                    class="me-2 avatar-sm rounded-circle"
-                    src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                    alt="Generic placeholder image"
-                  />
-                  <div class="w-100">
-                    <h5 class="m-0">Jeremy Tomlinson</h5>
-                    <p class="text-muted"><small>15 hours ago</small></p>
-                  </div>
-                </div>
-                <p>
-                  The parallax is a little odd but O.o that house build is
-                  awesome!!
-                </p>
-
-                <iframe
-                  src="https://player.vimeo.com/video/87993762"
-                  height="300"
-                  class="img-fluid border-0"
-                ></iframe>
-              </div>
-
-              <div class="text-center">
-                <a href="javascript:void(0);" class="text-danger"
-                  ><i class="mdi mdi-spin mdi-loading me-1"></i> Load more
-                </a>
+                <% }) %> <% } else { %> No Posts Found :( <% } %>
               </div>
             </div>
           </div>
@@ -324,6 +235,16 @@
       </div>
       <!-- end row-->
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <footer id="sticky-footer" class="flex-shrink-0 py-4 text-white" style="background-color : #4285F4">
+      <div class="container text-center">
+        <small>Copyright &copy; The Marcy Lab School</small>
+      </div>
+    </footer>
   </body>
 </html>
